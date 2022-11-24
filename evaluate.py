@@ -13,7 +13,7 @@ def evaluate(net, dataloader, device, num_classes):
         image, mask_true = batch['image'], batch['mask']
         # move images and labels to correct device and type
         image = image.to(device=device, dtype=torch.float32)
-        mask_true = mask_true.to(device=device, dtype=torch.long).squeeze(dim=0)
+        mask_true = mask_true.to(device=device, dtype=torch.long).squeeze(dim=1)
         mask_true = F.one_hot(mask_true, num_classes).permute(0, 3, 1, 2).float()
 
         with torch.no_grad():

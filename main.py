@@ -31,7 +31,7 @@ parser.add_argument('--save_path',
                     help='the path of save_model')
 parser.add_argument('--deterministic',
                     type=int,
-                    default=0,
+                    default=1,
                     help='whether use deterministic training')
 parser.add_argument('--max_iterations',
                     type=int,
@@ -46,7 +46,7 @@ parser.add_argument('--base_lr',
                     help='maximum epoch number to train')
 parser.add_argument('--batch_size',
                     type=int,
-                    default=1,
+                    default=2,
                     help='the batch_size of training size')
 parser.add_argument('--ema_decay', type=float, default=0.99, help='ema_decay')
 parser.add_argument('--consistency',
@@ -155,11 +155,10 @@ optimizer = optim.SGD(model.parameters(),
                       weight_decay=0.0001)
 consistency_criterion = losses.softmax_mse_loss
 max_epoch = max_iterations // len(weak_dataloader) + 1
-CEloss = torch.nn.CrossEntropyLoss(reduction='mean')
+CEloss = torch.nn.CrossEntropyLoss()
 iter_num = 0
 '''train'''
 #nclos自定义长度
-print('start training')
 for epoch_num in tqdm(range(max_epoch), ncols=70):
     for i, sampled_batch in enumerate(
             zip(labeled_dataloader, cycle(weak_dataloader))):
@@ -204,9 +203,10 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
         consistency_weight = get_current_consistency_weight(iter_num // 150)
         consistency_dist = consistency_criterion(outputs_weak, ema_output)
         consistency_loss = consistency_weight * consistency_dist / minibatch_size
+        
+        #weak_supervised_loss = 5 * consistency_weight * weak_supervised_loss
+        loss = 0.5 * supervised_loss + consistency_loss
 
-        weak_supervised_loss = 5 * consistency_weight * weak_supervised_loss
-        loss = supervised_loss + weak_supervised_loss + consistency_loss
 
         #student model反向传播
         optimizer.zero_grad()
@@ -232,7 +232,7 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
                         dataloader=val_dataloader,
                         device=device,
                         num_classes=num_classes)
-    print(val_dice)
+    print(loss.item(), val_dice.item())
     if iter_num >= max_iterations:
         break
 
