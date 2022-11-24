@@ -4,7 +4,7 @@ import time
 import random
 import numpy as np
 from itertools import cycle
-import tqdm
+from tqdm import tqdm
 
 import torch
 import torch.optim as optim
@@ -33,7 +33,7 @@ parser.add_argument('--consistency_rampup', type=float,  default=40.0, help='con
 args = parser.parse_args()
 
 train_path = args.train_path
-labeled_path = train_path + '/' + "labelded_data"
+labeled_path = train_path + '/' + "labeled_data"
 weak_path = train_path + '/' + "weak_labeled_data"
 
 val_path = args.val_path
@@ -68,7 +68,7 @@ def update_ema_variables(model, ema_model, alpha, global_step):
 
 def create_model(ema=False):
     # Network definition
-    net = UNet(n_channels=1, n_classes=num_classes)
+    net = UNet(n_channels=3, n_classes=num_classes)
     model = net.cuda()
     #截断反向传播的梯度流
     if ema:
@@ -82,11 +82,11 @@ ema_model = create_model(ema=True)
 def worker_init_fn(worker_id):
     random.seed(args.seed+worker_id)
 
-labeled_dataset = data_loading.BasicDataset(imgs_dir=labeled_path+'/' + 'imgs', masks_dir=labeled_path+'/'+'masks',size=datasize)
-weak_dataset = data_loading.BasicDataset(imgs_dir=weak_path+'/'+'imgs', masks_dir=weak_path+'/'+'masks', probability_dir=weak_path+'/'+'probability_maps', size=datasize)
+labeled_dataset = data_loading.BasicDataset(imgs_dir=labeled_path+'/' + 'imgs/', masks_dir=labeled_path+'/'+'masks/',size=datasize)
+weak_dataset = data_loading.BasicDataset(imgs_dir=weak_path+'/'+'imgs/', masks_dir=weak_path+'/'+'masks/', probability_dir=weak_path+'/'+'probability_maps/', size=datasize)
 labeled_dataloader = DataLoader(dataset=labeled_dataset, batch_size=batch_size, shuffle=True, num_workers=0,pin_memory=True,worker_init_fn=worker_init_fn)
 weak_dataloader = DataLoader(dataset=weak_dataset, batch_size=batch_size*2, shuffle=True, num_workers=0,pin_memory=True,worker_init_fn=worker_init_fn)
-val_dataset = data_loading.BasicDataset(imgs_dir=val_path+'/'+'imgs', masks_dir=val_path+'/'+'masks',size=datasize)
+val_dataset = data_loading.BasicDataset(imgs_dir=val_path+'/'+'imgs/', masks_dir=val_path+'/'+'masks/',size=datasize)
 val_dataloader = DataLoader(dataset=val_dataset,batch_size=batch_size, shuffle=False, num_workers=0,pin_memory=True,worker_init_fn=worker_init_fn)
 
 '''some para'''
@@ -100,23 +100,24 @@ iter_num = 0
 '''train'''
 #nclos自定义长度
 for epoch_num in tqdm(range(max_epoch), ncols=70):
+    print('start training')
     for i, sampled_batch in enumerate(zip(labeled_dataloader, cycle(weak_dataloader))):
         #labeled data and weak labeded data
         labeled_imgs, labeled_masks = sampled_batch[0]['image'], sampled_batch[0]['mask']
         weak_imgs, weak_masks, p_maps = sampled_batch[1]['image'], sampled_batch[1]['mask'], sampled_batch[1]['probability_map']
         #to gpu
-        labeled_imgs, labeled_masks = labeled_imgs.cuda(), labeled_masks.cuda()
-        weak_imgs, weak_masks, p_maps = weak_imgs.cuda(), weak_masks.cuda(), p_maps.cuda()
+        labeled_imgs, labeled_masks = labeled_imgs.to(device = device, dtype=torch.float32), labeled_masks.to(device=device,dtype=torch.long).squeeze(dim = 0)
+        weak_imgs, weak_masks = weak_imgs.to(device=device, dtype=torch.float32), weak_masks.to(device=device,dtype=torch.long).squeeze(dim = 0)
         #噪声
         noise = torch.clamp(torch.randn_like(weak_imgs) * 0.1, -0.2, 0.2)
         #前向传播（model and emamodel）
         ema_inputs = weak_imgs + noise
-        outputs = model(labeled_imgs)
+        outputs_labeled, outputs_weak = model(labeled_imgs), model(weak_imgs)
         with torch.no_grad():
             ema_output = ema_model(ema_inputs)
 
         #计算有监督损失
-        supervised_loss = CEloss(outputs, labeled_masks) + dice_score.dice_loss(F.softmax(outputs, dim=1).float(),
+        supervised_loss = CEloss(outputs_labeled, labeled_masks) + dice_score.dice_loss(F.softmax(outputs_labeled, dim=1).float(),
                     F.one_hot(labeled_masks, num_classes).permute(0, 3, 1, 2).float(),
                     multiclass=True)
 
@@ -124,14 +125,14 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
         # outputs_soft = F.softmax(outputs, dim=1)
         #一致性损失
         consistency_weight = get_current_consistency_weight(iter_num//150)
-        consistency_dist = consistency_criterion(outputs, ema_output)
+        consistency_dist = consistency_criterion(outputs_weak, ema_output)
         consistency_loss = consistency_weight * consistency_dist
 
         loss = 0.5*(supervised_loss) + consistency_loss
         '''一大块留着计算弱监督的损失'''
         #student model反向传播
         optimizer.zero_grad()
-        loss.backward()
+        loss.backward(torch.ones_like(loss))
         optimizer.step()
         #teacher model EMA更新参数
         update_ema_variables(model, ema_model, args.ema_decay, iter_num)
@@ -148,7 +149,7 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
             torch.save(model.state_dict(), save_mode_path)
         if iter_num >= max_iterations:
             break
-    val_dice = evaluate(net = model, dataloader=val_dataloader, device=device)
+    val_dice = evaluate(net = model, dataloader=val_dataloader, device=device,num_classes=num_classes)
     print(val_dice)
     if iter_num >= max_iterations:
         break
