@@ -55,7 +55,6 @@ def entropy_loss_map(p, C=2):
 
 def softmax_mse_loss(input_logits, target_logits):
     """Takes softmax on both sides and returns MSE loss
-
     Note:
     - Returns the sum over all examples. Divide by the batch size afterwards
       if you want the mean.
@@ -64,9 +63,8 @@ def softmax_mse_loss(input_logits, target_logits):
     assert input_logits.size() == target_logits.size()
     input_softmax = F.softmax(input_logits, dim=1)
     target_softmax = F.softmax(target_logits, dim=1)
-
-    mse_loss = (input_softmax-target_softmax)**2
-    return mse_loss
+    num_classes = input_logits.size()[1]
+    return F.mse_loss(input_softmax, target_softmax, size_average=False) / num_classes
 
 def softmax_kl_loss(input_logits, target_logits):
     """Takes softmax on both sides and returns KL divergence
