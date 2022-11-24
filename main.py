@@ -4,6 +4,7 @@ import time
 import random
 import numpy as np
 from itertools import cycle
+import tqdm
 
 import torch
 import torch.optim as optim
@@ -13,8 +14,7 @@ from torch.utils.data import DataLoader
 
 from unet import UNet
 from utils import data_loading, ramps, losses, dice_score
-import tqdm
-
+from evaluate import evaluate
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--train_path', type=str, default='./data/train', help='the path of training data')
@@ -36,7 +36,10 @@ train_path = args.train_path
 labeled_path = train_path + '/' + "labelded_data"
 weak_path = train_path + '/' + "weak_labeled_data"
 
+val_path = args.val_path
+
 os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
+device = torch.device('cuda:' + str(args.gpu) if torch.cuda.is_available() else 'cpu')
 batch_size = args.batch_size
 max_iterations = args.max_iterations
 base_lr = args.base_lr
@@ -78,10 +81,13 @@ ema_model = create_model(ema=True)
 '''data'''
 def worker_init_fn(worker_id):
     random.seed(args.seed+worker_id)
+
 labeled_dataset = data_loading.BasicDataset(imgs_dir=labeled_path+'/' + 'imgs', masks_dir=labeled_path+'/'+'masks',size=datasize)
 weak_dataset = data_loading.BasicDataset(imgs_dir=weak_path+'/'+'imgs', masks_dir=weak_path+'/'+'masks', probability_dir=weak_path+'/'+'probability_maps', size=datasize)
 labeled_dataloader = DataLoader(dataset=labeled_dataset, batch_size=batch_size, shuffle=True, num_workers=0,pin_memory=True,worker_init_fn=worker_init_fn)
 weak_dataloader = DataLoader(dataset=weak_dataset, batch_size=batch_size*2, shuffle=True, num_workers=0,pin_memory=True,worker_init_fn=worker_init_fn)
+val_dataset = data_loading.BasicDataset(imgs_dir=val_path+'/'+'imgs', masks_dir=val_path+'/'+'masks',size=datasize)
+val_dataloader = DataLoader(dataset=val_dataset,batch_size=batch_size, shuffle=False, num_workers=0,pin_memory=True,worker_init_fn=worker_init_fn)
 
 '''some para'''
 model.train()
@@ -120,6 +126,7 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
         consistency_weight = get_current_consistency_weight(iter_num//150)
         consistency_dist = consistency_criterion(outputs, ema_output)
         consistency_loss = consistency_weight * consistency_dist
+
         loss = 0.5*(supervised_loss) + consistency_loss
         '''一大块留着计算弱监督的损失'''
         #student model反向传播
@@ -141,7 +148,10 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
             torch.save(model.state_dict(), save_mode_path)
         if iter_num >= max_iterations:
             break
+    val_dice = evaluate(net = model, dataloader=val_dataloader, device=device)
+    print(val_dice)
     if iter_num >= max_iterations:
         break
+
 save_mode_path = os.path.join(args.save_path, 'iter_'+str(max_iterations)+'.pth')
 torch.save(model.state_dict(), save_mode_path)
