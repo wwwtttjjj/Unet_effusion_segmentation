@@ -5,6 +5,7 @@ import random
 import numpy as np
 from itertools import cycle
 from tqdm import tqdm
+import wandb
 
 import torch
 import torch.optim as optim
@@ -13,14 +14,16 @@ import torch.backends.cudnn as cudnn
 from torch.utils.data import DataLoader
 
 from unet import UNet
-from utils import data_loading, ramps, losses, dice_score
+from utils import data_loading, ramps, losses, dice_score, data_loading_CLACH
 from evaluate import evaluate
+from transformers import transformer_img
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--train_path',
                     type=str,
                     default='./data/train',
                     help='the path of training data')
+
 parser.add_argument('--val_path',
                     type=str,
                     default='./data/val',
@@ -57,6 +60,14 @@ parser.add_argument('--consistency_rampup',
                     type=float,
                     default=40.0,
                     help='consistency_rampup')
+parser.add_argument('--consistency_loss',
+                    type=bool,
+                    default=True,
+                    help='add or not add consistency_loss')
+parser.add_argument('--weak_loss',
+                    type=bool,
+                    default=True,
+                    help='add or not add weak_loss')
 args = parser.parse_args()
 
 train_path = args.train_path
@@ -116,15 +127,27 @@ def worker_init_fn(worker_id):
     random.seed(args.seed + worker_id)
 
 
-labeled_dataset = data_loading.BasicDataset(
+labeled_dataset = data_loading_CLACH.BasicDataset(
     imgs_dir=labeled_path + '/' + 'imgs/',
     masks_dir=labeled_path + '/' + 'masks/',
-    size=datasize)
-weak_dataset = data_loading.BasicDataset(imgs_dir=weak_path + '/' + 'imgs/',
-                                         masks_dir=weak_path + '/' + 'masks/',
-                                         probability_dir=weak_path + '/' +
-                                         'probability_maps/',
-                                         size=datasize)
+    size=datasize,
+    augumentation=transformer_img())
+weak_dataset = data_loading_CLACH.BasicDataset(
+    imgs_dir=weak_path + '/' + 'imgs/',
+    masks_dir=weak_path + '/' + 'masks/',
+    probability_dir=weak_path + '/' + 'probability_maps/',
+    size=datasize,
+    augumentation=transformer_img())
+# val_dataset = data_loading_CLACH.BasicDataset(
+#     imgs_dir=val_path + '/' + 'imgs/',
+#     masks_dir=val_path + '/' + 'masks/',
+#     size=datasize,
+#     augumentation=transformer_img())
+val_dataset = data_loading_CLACH.BasicDataset(
+    imgs_dir=val_path + '/' + 'imgs/',
+    masks_dir=val_path + '/' + 'masks/',
+    size=datasize,
+    augumentation=None)
 labeled_dataloader = DataLoader(dataset=labeled_dataset,
                                 batch_size=batch_size,
                                 shuffle=True,
@@ -137,9 +160,7 @@ weak_dataloader = DataLoader(dataset=weak_dataset,
                              num_workers=0,
                              pin_memory=True,
                              worker_init_fn=worker_init_fn)
-val_dataset = data_loading.BasicDataset(imgs_dir=val_path + '/' + 'imgs/',
-                                        masks_dir=val_path + '/' + 'masks/',
-                                        size=datasize)
+
 val_dataloader = DataLoader(dataset=val_dataset,
                             batch_size=batch_size,
                             shuffle=False,
@@ -157,9 +178,13 @@ consistency_criterion = losses.softmax_mse_loss
 max_epoch = max_iterations // len(weak_dataloader) + 1
 CEloss = torch.nn.CrossEntropyLoss()
 iter_num = 0
+'''wandb'''
+wandb.init(entity='wtj', project='Unet_effusion_segmentation')
+wandb.config = {'epochs': max_epoch, 'batch_size': args.batch_size}
 '''train'''
 #nclos自定义长度
 for epoch_num in tqdm(range(max_epoch), ncols=70):
+    loss_dict = {"supervised_loss": 0, "weak_loss": 0, "consistency_loss": 0}
     for i, sampled_batch in enumerate(
             zip(labeled_dataloader, cycle(weak_dataloader))):
         #labeled data and weak labeded data
@@ -179,7 +204,7 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
         noise = torch.clamp(torch.randn_like(weak_imgs) * 0.1, -0.2, 0.2)
         #前向传播（model and emamodel）
         ema_inputs = weak_imgs + noise
-        outputs_labeled, outputs_weak = model(labeled_imgs), model(weak_imgs)
+        outputs_labeled = model(labeled_imgs)
         minibatch_size = len(weak_masks)
         with torch.no_grad():
             ema_output = ema_model(ema_inputs)
@@ -191,27 +216,43 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
                 F.one_hot(labeled_masks, num_classes).permute(0, 3, 1,
                                                               2).float(),
                 multiclass=True)
-
-        weak_supervised_loss = CEloss(
-            outputs_weak, weak_masks) + dice_score.dice_loss(
-                F.softmax(outputs_weak, dim=1).float(),
-                F.one_hot(weak_masks, num_classes).permute(0, 3, 1, 2).float(),
-                multiclass=True)
-        # loss_seg = F.cross_entropy(outputs, labeled_masks)
-        # outputs_soft = F.softmax(outputs, dim=1)
+        supervised_loss = 0.5 * supervised_loss
+        loss = supervised_loss
+        #计算弱监督损失
+        if args.weak_loss:
+            outputs_weak = model(weak_imgs)
+            weak_supervised_loss = CEloss(
+                outputs_weak, weak_masks) + dice_score.dice_loss(
+                    F.softmax(outputs_weak, dim=1).float(),
+                    F.one_hot(weak_masks, num_classes).permute(0, 3, 1,
+                                                               2).float(),
+                    multiclass=True)
+            consistency_weight = get_current_consistency_weight(iter_num //
+                                                                150)
+            weak_supervised_loss = 5 * consistency_weight * weak_supervised_loss
+            loss += weak_supervised_loss
         #一致性损失
-        consistency_weight = get_current_consistency_weight(iter_num // 150)
-        consistency_dist = consistency_criterion(outputs_weak, ema_output)
-        consistency_loss = consistency_weight * consistency_dist / minibatch_size
-        
-        #weak_supervised_loss = 5 * consistency_weight * weak_supervised_loss
-        loss = 0.5 * supervised_loss + consistency_loss
+        if args.consistency_loss:
 
+            consistency_dist = consistency_criterion(outputs_weak, ema_output)
+            consistency_loss = consistency_weight * consistency_dist / minibatch_size
+            loss += consistency_loss
 
         #student model反向传播
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        for key, value in loss_dict.items():
+            if key == "supervised_loss":
+                loss_dict[key] += supervised_loss.detach().cpu() / len(
+                    labeled_masks)
+            elif key == "weak_loss" and args.weak_loss:
+                loss_dict[key] += weak_supervised_loss.detach().cpu(
+                ) / minibatch_size
+            elif key == "consistency_loss" and args.consistency_loss:
+                loss_dict[key] += consistency_loss.detach().cpu(
+                ) / minibatch_size
+
         #teacher model EMA更新参数
         update_ema_variables(model, ema_model, args.ema_decay, iter_num)
         iter_num = iter_num + 1
@@ -232,7 +273,16 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
                         dataloader=val_dataloader,
                         device=device,
                         num_classes=num_classes)
-    print(loss.item(), val_dice.item())
+    total_loss = loss_dict["supervised_loss"] + loss_dict[
+        "weak_loss"] + loss_dict["consistency_loss"]
+    wandb.log({
+        'supervised_loss': loss_dict["supervised_loss"],
+        "weak_loss": loss_dict["weak_loss"],
+        "consistency_loss": loss_dict["consistency_loss"],
+        "total_loss": total_loss,
+        "val_dice": val_dice
+    })
+    print(total_loss, val_dice.item())
     if iter_num >= max_iterations:
         break
 
