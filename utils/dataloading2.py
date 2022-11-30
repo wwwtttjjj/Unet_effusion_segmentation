@@ -6,6 +6,7 @@ import torch
 from torch.utils.data import Dataset
 import logging
 from PIL import Image
+import cv2
 
 
 # from utils.dataGenerator import sample_random_patch_png, sample_label_with_coor_png
@@ -14,11 +15,12 @@ from PIL import Image
 # 将文件夹里的数据读成dataset
 class BasicDataset(Dataset):
     # 构造函数
-    def __init__(self, imgs_dir, masks_dir,size, probability_dir = None):
+    def __init__(self, imgs_dir, masks_dir,size, augumentation,probability_dir = None):
         self.size = size  # 图像统一裁剪尺寸
         self.imgs_dir = imgs_dir  # 图像文件
         self.masks_dir = masks_dir  # 标签文件夹
         self.probability_dir = probability_dir
+        self.augumentation = augumentation
 
         # 获得所有图像文件名
         self.ids = [file for file in listdir(imgs_dir)
@@ -77,12 +79,16 @@ class BasicDataset(Dataset):
         mask = mask_original.copy()  # 有时候没有修改权限，需要复制一份
         mask = mask / 255  # 将mask转为0、1标签
 
+        image = cv2.imread(img_file)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        img = Image.open(img_file)  # 读取图像
+     
+
+        if self.augumentation:
+            sample_img = self.augumentation(image = image, mask = mask)
+            image = sample_img['image']
+        img = Image.fromarray(image)
        
-
-        
-
         image = self.preprocess(image, 1, self.size)  # 图像预处理
         mask = self.preprocess(mask, 0, self.size)  # 标签预处理
 

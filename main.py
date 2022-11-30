@@ -17,6 +17,7 @@ from unet import UNet
 from utils import data_loading, ramps, losses, dice_score, data_loading_CLACH
 from evaluate import evaluate
 from transformers import transformer_img
+import get_errormaps
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--train_path',
@@ -52,6 +53,8 @@ parser.add_argument('--batch_size',
                     default=2,
                     help='the batch_size of training size')
 parser.add_argument('--ema_decay', type=float, default=0.99, help='ema_decay')
+parser.add_argument('--beta', type=float, default=5.0, help='beta')
+
 parser.add_argument('--consistency',
                     type=float,
                     default=0.1,
@@ -218,25 +221,28 @@ for epoch_num in tqdm(range(max_epoch), ncols=70):
                 multiclass=True)
         supervised_loss = 0.5 * supervised_loss
         loss = supervised_loss
+        #一致性损失
+        if args.consistency_loss:
+            outputs_weak = model(weak_imgs)
+            consistency_weight = get_current_consistency_weight(iter_num //
+                                                                150)
+            consistency_dist = consistency_criterion(outputs_weak, ema_output)
+            consistency_loss = consistency_weight * consistency_dist / minibatch_size
+            loss += consistency_loss
+
         #计算弱监督损失
         if args.weak_loss:
-            outputs_weak = model(weak_imgs)
+            weak_masks =  get_errormaps.get_masks(ema_output, weak_masks, p_maps)
             weak_supervised_loss = CEloss(
                 outputs_weak, weak_masks) + dice_score.dice_loss(
                     F.softmax(outputs_weak, dim=1).float(),
                     F.one_hot(weak_masks, num_classes).permute(0, 3, 1,
                                                                2).float(),
                     multiclass=True)
-            consistency_weight = get_current_consistency_weight(iter_num //
-                                                                150)
-            weak_supervised_loss = 5 * consistency_weight * weak_supervised_loss
-            loss += weak_supervised_loss
-        #一致性损失
-        if args.consistency_loss:
 
-            consistency_dist = consistency_criterion(outputs_weak, ema_output)
-            consistency_loss = consistency_weight * consistency_dist / minibatch_size
-            loss += consistency_loss
+            weak_supervised_loss = args.beta * consistency_weight * weak_supervised_loss
+            loss += weak_supervised_loss
+
 
         #student model反向传播
         optimizer.zero_grad()
