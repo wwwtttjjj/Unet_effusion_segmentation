@@ -113,7 +113,7 @@ def update_ema_variables(model, ema_model, alpha, global_step):
 def create_model(ema=False):
     # Network definition
     net = UNet(n_channels=3, n_classes=num_classes)
-    model = net.cuda()
+    model = net.to(device)
     #截断反向传播的梯度流
     if ema:
         for param in model.parameters():
