@@ -9,7 +9,7 @@ from PIL import Image
 import cv2
 
 # from utils.dataGenerator import sample_random_patch_png, sample_label_with_coor_png
-
+color2label = [100, 200, 255]
 
 # 将文件夹里的数据读成dataset
 class BasicDataset(Dataset):
@@ -38,7 +38,7 @@ class BasicDataset(Dataset):
 
     # 数据预处理
     @classmethod
-    def preprocess(cls, pil_img, is_img, size):
+    def preprocess(cls, pil_img, is_img, size, mask_true = False):
         # 如果是图像对象，将它转成numpy数组
         if is_img:
             img_nd = np.array(pil_img)
@@ -51,7 +51,7 @@ class BasicDataset(Dataset):
 
         img_trans = img_nd
         # 将图像的像素值归一化到0到1之间
-        if img_trans.max() > 1:
+        if img_trans.max() > 1 and not mask_true:
             img_trans = img_trans / 255
 
         # 将图像裁剪为统一大小
@@ -63,6 +63,7 @@ class BasicDataset(Dataset):
 
             # 因为裁减掉的长度不一定被2整除，所以判断各种情况来进行左右填充
             if (img_trans.shape[0] - x) % 2 == 1 and (img_trans.shape[1] -
+
                                                       y) % 2 == 1:
                 img_trans = img_trans[jianx + 1:-1 * jianx,
                                       jiany + 1:-1 * jiany, :]
@@ -85,7 +86,6 @@ class BasicDataset(Dataset):
 
         mask_original = np.asarray(Image.open(mask_file))  # 读取标签
         mask = mask_original.copy()  # 有时候没有修改权限，需要复制一份
-        mask = mask / 255  # 将mask转为0、1标签
 
         image = cv2.imread(img_file)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -96,11 +96,10 @@ class BasicDataset(Dataset):
         img = Image.fromarray(image)
 
         image = self.preprocess(image, 1, self.size)  # 图像预处理
-        mask = self.preprocess(mask, 0, self.size)  # 标签预处理
+        mask = self.preprocess(mask, 0, self.size, mask_true = True)  # 标签预处理
 
-        idx_un = list(np.unique(mask))
-        for i in range(len(idx_un)):
-            mask[mask == idx_un[i]] = i
+        for i in range(len(color2label)):
+            mask[mask==color2label[i]] = i + 1
 
         if self.probability_dir:
             npy_file = np.load(self.probability_dir + idx[:-4] + '.npy')
