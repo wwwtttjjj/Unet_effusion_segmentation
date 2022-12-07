@@ -12,7 +12,7 @@ def get_masks(pred_labels, weak_masks, p_maps, device):
         cf_pmap = p_maps[batch,:,:].reshape(H * W)
         cf_label = labels[batch,:,:].reshape(H * W)
         cf_pred = np.squeeze(pred_probs[batch,:,:,:]).reshape(-1, H * W).T
-        print(cf_label.shape, cf_pred.shape, np.unique(cf_label))
+        # print(cf_label.shape, cf_pred.shape, np.unique(cf_label))
         error_maps = confinence_learning(cf_label, cf_pred)
         error_maps = update_errormaps(list(error_maps),cf_pmap)  #根据p_maps和error_maps更新error_maps
         weak_mask = label_refinement(error_maps, cf_label, cf_pred)  #label_refinement
@@ -35,7 +35,7 @@ def get_masks(pred_labels, weak_masks, p_maps, device):
     # print(confinence_learning(labels.reshape(304200,), pred_probs.reshape(304200, 4)))
     # return weak_masks
 
-
+#自信学习
 def confinence_learning(labels, pred_probs):
     ordered_label_issues = find_label_issues(
         labels=labels,
@@ -45,14 +45,15 @@ def confinence_learning(labels, pred_probs):
     )
     return ordered_label_issues
 
-
+#根据概率图谱更新错误的坐标，只取小于图谱阈值的坐标
 def update_errormaps(error_maps, p_maps):
     p_maps = p_maps.flatten()
     error_maps = [i for i in range(len(error_maps)) if p_maps[i] <= 0.9]
     return error_maps
 
-
+#标签修复，把自信学习后且过滤掉的错误的坐标更新为模型预测的坐标
 def label_refinement(error_maps, labels, pred_probs):
     for error in error_maps:
         labels[error] = np.argmax(pred_probs[error])
     return labels
+

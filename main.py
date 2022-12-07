@@ -5,7 +5,6 @@ from itertools import cycle
 from tqdm import tqdm
 import wandb
 import warnings
- 
 warnings.filterwarnings("ignore")
 
 import torch
@@ -29,10 +28,8 @@ if __name__ == "__main__":
     weak_path = train_path + '/' + "weak_labeled_data"
     val_path = args.val_path
 
-    device = torch.device('cuda:' +
-                        str(args.gpu) if torch.cuda.is_available() else 'cpu')
-    # batch_size = args.batch_size
-    batch_size = 1
+    device = torch.device('cuda:' + str(args.gpu) if torch.cuda.is_available() else 'cpu')
+    batch_size = args.batch_size
     max_iterations = args.max_iterations
     base_lr = args.base_lr
     num_classes = 4
@@ -46,12 +43,10 @@ if __name__ == "__main__":
         np.random.seed(args.seed)
         torch.manual_seed(args.seed)
         torch.cuda.manual_seed(args.seed)
-    '''model'''
 
-    model = create_model(device=device,num_classes=num_classes)
-    ema_model = create_model(device=device,num_classes=num_classes, ema=True)
+
+
     '''data'''
-
     labeled_dataset = data_loading_CLACH.BasicDataset(
         imgs_dir=labeled_path + '/' + 'imgs/',
         masks_dir=labeled_path + '/' + 'masks/',
@@ -94,20 +89,24 @@ if __name__ == "__main__":
                                 num_workers=0,
                                 pin_memory=True,
                                 worker_init_fn=worker_init_fn)
-    '''some para'''
+    '''model'''
+    model = create_model(device=device,num_classes=num_classes)
+    ema_model = create_model(device=device,num_classes=num_classes, ema=True)
     model.train()
     ema_model.train()
-    optimizer = optim.SGD(model.parameters(),
+
+    '''some para'''
+    optimizer = optim.Adam(model.parameters(),
                         lr=base_lr,
-                        momentum=0.9,
+                        betas=(0.9, 0.999),
                         weight_decay=0.0001)
     consistency_criterion = losses.softmax_mse_loss
     max_epoch = max_iterations // len(weak_dataloader) + 1
     CEloss = torch.nn.CrossEntropyLoss()
     iter_num = 0
     '''wandb'''
-    # wandb.init(entity='wtj', project='Unet_effusion_segmentation')
-    # wandb.config = {'epochs': max_epoch, 'batch_size': args.batch_size}
+    wandb.init(entity='wtj', project='Unet_effusion_segmentation')
+    wandb.config = {'epochs': max_epoch, 'batch_size': args.batch_size}
     '''train'''
     #nclos自定义长度
     for epoch_num in tqdm(range(max_epoch), ncols=70):
@@ -175,6 +174,9 @@ if __name__ == "__main__":
             loss.backward()
             optimizer.step()
 
+            #teacher model EMA更新参数
+            update_ema_variables(model, ema_model, args.ema_decay, iter_num)
+
             for key, value in loss_dict.items():
                 if key == "supervised_loss":
                     loss_dict[key] += supervised_loss.detach().cpu() / len(
@@ -186,8 +188,6 @@ if __name__ == "__main__":
                     loss_dict[key] += consistency_loss.detach().cpu(
                     ) / minibatch_size
 
-            #teacher model EMA更新参数
-            update_ema_variables(model, ema_model, args.ema_decay, iter_num)
             iter_num = iter_num + 1
 
             ## change lr
@@ -202,21 +202,21 @@ if __name__ == "__main__":
                 torch.save(model.state_dict(), save_mode_path)
             if iter_num >= max_iterations:
                 break
-        # val_dice = evaluate(net=model,
-        #                     dataloader=val_dataloader,
-        #                     device=device,
-        #                     num_classes=num_classes)
+        val_dice = evaluate(net=model,
+                            dataloader=val_dataloader,
+                            device=device,
+                            num_classes=num_classes)
         total_loss = loss_dict["supervised_loss"] + loss_dict[
             "weak_loss"] + loss_dict["consistency_loss"]
-        # wandb.log({
-        #     'supervised_loss': loss_dict["supervised_loss"],
-        #     "weak_loss": loss_dict["weak_loss"],
-        #     "consistency_loss": loss_dict["consistency_loss"],
-        #     "total_loss": total_loss,
-        #     "val_dice": val_dice
-        # })
-        # print(total_loss, val_dice.item())
-        print(total_loss)
+        wandb.log({
+            'supervised_loss': loss_dict["supervised_loss"],
+            "weak_loss": loss_dict["weak_loss"],
+            "consistency_loss": loss_dict["consistency_loss"],
+            "total_loss": total_loss,
+            "val_dice": val_dice
+        })
+        print(total_loss, val_dice.item())
+        # print(total_loss)
         if iter_num >= max_iterations:
             break
         break
