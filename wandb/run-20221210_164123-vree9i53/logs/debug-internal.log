@@ -1,0 +1,237 @@
+2022-12-10 16:41:23,114 INFO    StreamThr :5892 [internal.py:wandb_internal():88] W&B internal server running at pid: 5892, started at: 2022-12-10 16:41:23.114319
+2022-12-10 16:41:23,114 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: status
+2022-12-10 16:41:23,114 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: status
+2022-12-10 16:41:23,114 DEBUG   SenderThread:5892 [sender.py:send():301] send: header
+2022-12-10 16:41:23,114 INFO    WriterThread:5892 [datastore.py:open_for_write():75] open: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\run-vree9i53.wandb
+2022-12-10 16:41:23,148 DEBUG   SenderThread:5892 [sender.py:send():301] send: run
+2022-12-10 16:41:24,072 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: check_version
+2022-12-10 16:41:24,087 INFO    SenderThread:5892 [dir_watcher.py:__init__():216] watching files in: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files
+2022-12-10 16:41:24,087 INFO    SenderThread:5892 [sender.py:_start_run_threads():912] run started: vree9i53 with start time 1670661683.114318
+2022-12-10 16:41:24,087 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:41:24,087 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:41:24,087 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: check_version
+2022-12-10 16:41:24,903 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: run_start
+2022-12-10 16:41:24,919 DEBUG   HandlerThread:5892 [meta.py:__init__():34] meta init
+2022-12-10 16:41:24,919 DEBUG   HandlerThread:5892 [meta.py:__init__():49] meta init done
+2022-12-10 16:41:24,919 DEBUG   HandlerThread:5892 [meta.py:probe():215] probe
+2022-12-10 16:41:24,951 DEBUG   HandlerThread:5892 [meta.py:_setup_git():205] setup git
+2022-12-10 16:41:24,998 DEBUG   HandlerThread:5892 [meta.py:_setup_git():212] setup git done
+2022-12-10 16:41:24,998 DEBUG   HandlerThread:5892 [meta.py:_save_pip():53] save pip
+2022-12-10 16:41:24,998 DEBUG   HandlerThread:5892 [meta.py:_save_pip():67] save pip done
+2022-12-10 16:41:24,998 DEBUG   HandlerThread:5892 [meta.py:probe():253] probe done
+2022-12-10 16:41:25,108 DEBUG   SenderThread:5892 [sender.py:send():301] send: files
+2022-12-10 16:41:25,108 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-metadata.json with policy now
+2022-12-10 16:41:25,108 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:41:25,108 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:41:25,108 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\requirements.txt
+2022-12-10 16:41:25,108 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-metadata.json
+2022-12-10 16:41:25,108 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:41:25,579 DEBUG   SenderThread:5892 [sender.py:send():301] send: telemetry
+2022-12-10 16:41:26,130 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\output.log
+2022-12-10 16:41:26,177 INFO    Thread-23 :5892 [upload_job.py:push():139] Uploaded file C:\Users\10194\AppData\Local\Temp\tmp3xo6endrwandb\1bu47vhk-wandb-metadata.json
+2022-12-10 16:41:28,142 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\output.log
+2022-12-10 16:41:40,597 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:41:40,597 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:41:42,772 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:41:42,772 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:41:42,772 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:41:42,772 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:41:43,237 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:41:43,615 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:41:43,615 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:41:43,615 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:41:43,615 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:41:44,244 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:41:54,306 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\config.yaml
+2022-12-10 16:41:56,130 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:41:56,130 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:41:56,586 DEBUG   SenderThread:5892 [sender.py:send():301] send: stats
+2022-12-10 16:41:58,762 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:41:58,763 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:41:58,763 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:41:58,775 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:41:59,343 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:09,551 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:42:09,551 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:42:09,551 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:42:09,551 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:42:10,465 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:11,682 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:42:11,682 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:42:16,758 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:42:16,758 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:42:16,758 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:42:16,758 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:42:17,520 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:23,948 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:42:23,949 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:42:23,949 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:42:23,949 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:42:24,595 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:27,153 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:42:27,153 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:42:30,153 DEBUG   SenderThread:5892 [sender.py:send():301] send: stats
+2022-12-10 16:42:31,739 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:42:31,739 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:42:31,739 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:42:31,739 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:42:32,654 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:39,161 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:42:39,161 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:42:39,161 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:42:39,161 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:42:39,696 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:42,509 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:42:42,510 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:42:52,955 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:42:52,955 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:42:52,955 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:42:52,955 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:42:53,822 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:42:58,004 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:42:58,004 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:43:04,043 DEBUG   SenderThread:5892 [sender.py:send():301] send: stats
+2022-12-10 16:43:06,943 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: partial_history
+2022-12-10 16:43:06,943 DEBUG   SenderThread:5892 [sender.py:send():301] send: history
+2022-12-10 16:43:06,943 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:43:06,943 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:43:07,958 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:43:13,549 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: stop_status
+2022-12-10 16:43:13,549 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: stop_status
+2022-12-10 16:43:22,008 DEBUG   SenderThread:5892 [sender.py:send():301] send: exit
+2022-12-10 16:43:22,009 INFO    SenderThread:5892 [sender.py:send_exit():437] handling exit code: 255
+2022-12-10 16:43:22,009 INFO    SenderThread:5892 [sender.py:send_exit():439] handling runtime: 117
+2022-12-10 16:43:22,009 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:43:22,010 INFO    SenderThread:5892 [sender.py:send_exit():445] send defer
+2022-12-10 16:43:22,010 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,010 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 0
+2022-12-10 16:43:22,010 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,010 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 0
+2022-12-10 16:43:22,010 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 1
+2022-12-10 16:43:22,011 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,011 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 1
+2022-12-10 16:43:22,132 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:43:22,147 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,147 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 1
+2022-12-10 16:43:22,147 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:22,147 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 2
+2022-12-10 16:43:22,148 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:22,148 DEBUG   SenderThread:5892 [sender.py:send():301] send: stats
+2022-12-10 16:43:22,148 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,148 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 2
+2022-12-10 16:43:22,149 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,149 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 2
+2022-12-10 16:43:22,149 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 3
+2022-12-10 16:43:22,149 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,149 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 3
+2022-12-10 16:43:22,149 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,149 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 3
+2022-12-10 16:43:22,149 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 4
+2022-12-10 16:43:22,150 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,150 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 4
+2022-12-10 16:43:22,150 DEBUG   SenderThread:5892 [sender.py:send():301] send: summary
+2022-12-10 16:43:22,150 INFO    SenderThread:5892 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2022-12-10 16:43:22,151 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,151 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 4
+2022-12-10 16:43:22,151 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 5
+2022-12-10 16:43:22,151 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,151 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 5
+2022-12-10 16:43:22,151 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,151 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 5
+2022-12-10 16:43:22,151 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 6
+2022-12-10 16:43:22,151 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:22,151 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 6
+2022-12-10 16:43:22,151 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:22,151 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 6
+2022-12-10 16:43:22,262 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:23,146 INFO    Thread-17 :5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:43:24,171 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 7
+2022-12-10 16:43:24,171 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:24,174 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:24,174 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 7
+2022-12-10 16:43:24,174 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:24,174 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 7
+2022-12-10 16:43:24,174 INFO    SenderThread:5892 [dir_watcher.py:finish():362] shutting down directory watcher
+2022-12-10 16:43:24,283 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\output.log
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:finish():392] scan: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:finish():406] scan save: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\config.yaml config.yaml
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:finish():406] scan save: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\output.log output.log
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:finish():406] scan save: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\requirements.txt requirements.txt
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:finish():406] scan save: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-metadata.json wandb-metadata.json
+2022-12-10 16:43:25,169 INFO    SenderThread:5892 [dir_watcher.py:finish():406] scan save: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json wandb-summary.json
+2022-12-10 16:43:25,175 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 8
+2022-12-10 16:43:25,175 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,175 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:25,175 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 8
+2022-12-10 16:43:25,175 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:25,175 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 8
+2022-12-10 16:43:25,175 INFO    SenderThread:5892 [file_pusher.py:finish():168] shutting down file pusher
+2022-12-10 16:43:25,279 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,279 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,398 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,398 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,514 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,514 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,624 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,624 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,734 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,734 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,844 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,844 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:25,948 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:25,948 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,057 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,057 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,166 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,166 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,237 INFO    Thread-26 :5892 [upload_job.py:push():139] Uploaded file C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\requirements.txt
+2022-12-10 16:43:26,271 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,271 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,294 INFO    Thread-25 :5892 [upload_job.py:push():139] Uploaded file C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\output.log
+2022-12-10 16:43:26,299 INFO    Thread-24 :5892 [upload_job.py:push():139] Uploaded file C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\config.yaml
+2022-12-10 16:43:26,372 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,372 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,474 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,474 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,590 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,590 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,604 INFO    Thread-27 :5892 [upload_job.py:push():139] Uploaded file C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\files\wandb-summary.json
+2022-12-10 16:43:26,693 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,693 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,805 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:26,805 INFO    Thread-16 (_thread_body):5892 [sender.py:transition_state():458] send defer: 9
+2022-12-10 16:43:26,805 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:26,806 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:26,806 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 9
+2022-12-10 16:43:26,806 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:26,806 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 9
+2022-12-10 16:43:26,910 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:27,548 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 10
+2022-12-10 16:43:27,548 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:27,548 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:27,548 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 10
+2022-12-10 16:43:27,548 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:27,548 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 10
+2022-12-10 16:43:27,548 INFO    SenderThread:5892 [sender.py:transition_state():458] send defer: 11
+2022-12-10 16:43:27,548 DEBUG   SenderThread:5892 [sender.py:send():301] send: final
+2022-12-10 16:43:27,548 DEBUG   SenderThread:5892 [sender.py:send():301] send: footer
+2022-12-10 16:43:27,548 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: defer
+2022-12-10 16:43:27,548 INFO    HandlerThread:5892 [handler.py:handle_request_defer():161] handle defer: 11
+2022-12-10 16:43:27,548 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: defer
+2022-12-10 16:43:27,548 INFO    SenderThread:5892 [sender.py:send_request_defer():454] handle sender defer: 11
+2022-12-10 16:43:27,661 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: poll_exit
+2022-12-10 16:43:27,661 DEBUG   SenderThread:5892 [sender.py:send_request():315] send_request: poll_exit
+2022-12-10 16:43:27,661 INFO    SenderThread:5892 [file_pusher.py:join():173] waiting for file pusher
+2022-12-10 16:43:28,580 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: sampled_history
+2022-12-10 16:43:28,581 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: get_summary
+2022-12-10 16:43:28,581 INFO    MainThread:5892 [wandb_run.py:_footer_history_summary_info():3321] rendering history
+2022-12-10 16:43:28,581 INFO    MainThread:5892 [wandb_run.py:_footer_history_summary_info():3353] rendering summary
+2022-12-10 16:43:28,583 INFO    MainThread:5892 [wandb_run.py:_footer_sync_info():3277] logging synced files
+2022-12-10 16:43:28,583 DEBUG   HandlerThread:5892 [handler.py:handle_request():138] handle_request: shutdown
+2022-12-10 16:43:28,583 INFO    HandlerThread:5892 [handler.py:finish():807] shutting down handler
+2022-12-10 16:43:29,483 INFO    SenderThread:5892 [sender.py:finish():1315] shutting down sender
+2022-12-10 16:43:29,483 INFO    SenderThread:5892 [file_pusher.py:finish():168] shutting down file pusher
+2022-12-10 16:43:29,483 INFO    SenderThread:5892 [file_pusher.py:join():173] waiting for file pusher
+2022-12-10 16:43:29,580 INFO    WriterThread:5892 [datastore.py:close():279] close: C:\Users\10194\Desktop\Unet_effusion_segmentation\wandb\run-20221210_164123-vree9i53\run-vree9i53.wandb
+2022-12-10 16:43:29,596 INFO    MainThread:5892 [internal.py:handle_exit():78] Internal process exited

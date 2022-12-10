@@ -1,0 +1,26 @@
+
+  0%|                                          | 0/93 [00:00<?, ?it/s]
+Starting training:
+    Epochs:          93
+    Batch size(labeled, weak_labeled):      (2, 4)
+    Learning rate:   0.01
+    Training size:   (400, 400)
+    Checkpoints:     C:/Users/10194/Desktop/Unet_effusion_segmentation/checkpoints
+    Device:          cuda
+  0%|                                          | 0/93 [09:20<?, ?it/s]
+Traceback (most recent call last):
+  File "c:\Users\10194\Desktop\Unet_effusion_segmentation\main.py", line 206, in <module>
+    dataloader=val_dataloader,
+  File "c:\Users\10194\Desktop\Unet_effusion_segmentation\evaluate.py", line 12, in evaluate
+    for batch in dataloader:
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\utils\data\dataloader.py", line 681, in __next__
+    data = self._next_data()
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\utils\data\dataloader.py", line 721, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\utils\data\_utils\fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\site-packages\torch\utils\data\_utils\fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "c:\Users\10194\Desktop\Unet_effusion_segmentation\utils\data_loading_CLACH.py", line 90, in __getitem__
+    image = cv2.imread(img_file)
+KeyboardInterrupt

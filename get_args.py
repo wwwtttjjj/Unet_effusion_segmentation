@@ -21,8 +21,8 @@ def get_parser():
                         help='whether use deterministic training')
     parser.add_argument('--max_iterations',
                         type=int,
-                        default=6000,
-                        help='maximum epoch number to train')
+                        default=30000,
+                        help='maximum iterations number to train')
 
     parser.add_argument('--seed', type=int, default=1337, help='random seed')
     parser.add_argument('--gpu', type=int, default=0, help='GPU to use')
@@ -35,7 +35,8 @@ def get_parser():
                         default=2,
                         help='the batch_size of training size')
     parser.add_argument('--ema_decay', type=float, default=0.99, help='ema_decay')
-    parser.add_argument('--beta', type=float, default=5.0, help='beta')
+    parser.add_argument('--alpha', type=float, default=1.0, help='alpha of supervised loss para')
+    parser.add_argument('--beta', type=float, default=5.0, help='beta of weak supervised loss para')
 
     parser.add_argument('--consistency',
                         type=float,

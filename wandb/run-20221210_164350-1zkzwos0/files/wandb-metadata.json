@@ -1,0 +1,28 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.10.6",
+    "heartbeatAt": "2022-12-10T08:43:52.249668",
+    "startedAt": "2022-12-10T08:43:50.467041",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3060 Ti",
+    "gpu_count": 1,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [
+        "--train_path=C:/Users/10194/Desktop/Unet_effusion_segmentation/data/train",
+        "--val_path=C:/Users/10194/Desktop/Unet_effusion_segmentation/data/val",
+        "--save_path=C:/Users/10194/Desktop/Unet_effusion_segmentation/checkpoints"
+    ],
+    "state": "running",
+    "program": "c:\\Users\\10194\\Desktop\\Unet_effusion_segmentation\\main.py",
+    "codePath": "main.py",
+    "git": {
+        "remote": "https://github.com/wwwtttjjj/Unet_effusion_segmentation.git",
+        "commit": "dc0bdd425e7392e516457473bf932cb1746ecabc"
+    },
+    "email": "1019495562@qq.com",
+    "root": "C:/Users/10194/Desktop/Unet_effusion_segmentation",
+    "host": "wtj",
+    "username": "10194",
+    "executable": "C:\\Users\\10194\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"
+}

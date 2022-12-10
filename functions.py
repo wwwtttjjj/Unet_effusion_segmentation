@@ -1,6 +1,8 @@
 from utils import ramps
 from unet import UNet
-
+import os
+import torch
+import logging
 def get_current_consistency_weight(args, epoch):
     # Consistency ramp-up from https://arxiv.org/abs/1610.02242
     return args.consistency * ramps.sigmoid_rampup(epoch,
@@ -22,4 +24,10 @@ def create_model(device, num_classes = 4, ema=False):
         for param in model.parameters():
             param.detach_()
     return model
+
+def save_model(save_path, iter_num, model):
+    save_mode_path = os.path.join(save_path,
+                                'iter_' + str(iter_num) + '.pth')
+    torch.save(model.state_dict(), save_mode_path)
+    print(f'Checkpoint {iter_num} saved!')
 

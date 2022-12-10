@@ -1,0 +1,22 @@
+
+  0%|                                          | 0/93 [01:56<?, ?it/s]
+Traceback (most recent call last):
+  File "c:\Users\10194\Desktop\Unet_effusion_segmentation\main.py", line 171, in <module>
+    cf_weak_masks =  get_errormaps.get_masks(pred_labels, weak_masks, p_maps, device)
+  File "c:\Users\10194\Desktop\Unet_effusion_segmentation\get_errormaps.py", line 19, in get_masks
+    error_maps = confinence_learning(cf_label, cf_pred)
+  File "c:\Users\10194\Desktop\Unet_effusion_segmentation\get_errormaps.py", line 29, in confinence_learning
+    ordered_label_issues = find_label_issues(
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\site-packages\cleanlab\filter.py", line 354, in find_label_issues
+    label_issues_masks_per_class = p.map(_prune_by_count, range(K))
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\multiprocessing\pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\multiprocessing\pool.py", line 768, in get
+    self.wait(timeout)
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\multiprocessing\pool.py", line 765, in wait
+    self._event.wait(timeout)
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\threading.py", line 607, in wait
+    signaled = self._cond.wait(timeout)
+  File "C:\Users\10194\AppData\Local\Programs\Python\Python310\lib\threading.py", line 320, in wait
+    waiter.acquire()
+KeyboardInterrupt

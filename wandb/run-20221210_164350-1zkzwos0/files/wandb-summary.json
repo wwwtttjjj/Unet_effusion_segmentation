@@ -1,0 +1,1 @@
+{"supervised_loss": 2.0164918899536133, "weak_loss": 0.007080018520355225, "consistency_loss": 0.05280245095491409, "total_loss": 2.0763745307922363, "step": 64, "_timestamp": 1670662371.4258037, "_runtime": 540.9431476593018, "_step": 64, "val_dice": 0.3150523006916046, "_wandb": {"runtime": 560}}
