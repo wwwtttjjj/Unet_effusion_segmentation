@@ -76,7 +76,7 @@ if __name__ == "__main__":
                                     pin_memory=True,
                                     worker_init_fn=worker_init_fn)
     weak_dataloader = DataLoader(dataset=weak_dataset,
-                                batch_size=batch_size * 2,#weak labeled data每次迭代都是batch_size的两倍
+                                batch_size=batch_size * 3,#weak labeled data每次迭代都是batch_size的三倍
                                 shuffle=True,
                                 num_workers=0,
                                 pin_memory=True,
@@ -105,12 +105,14 @@ if __name__ == "__main__":
     CEloss = torch.nn.CrossEntropyLoss()
     iter_num = 0
     '''wandb'''
-    wandb.init(entity='wtj', project='Unet_effusion_segmentation')
-    wandb.config = {'epochs': max_epoch, 'batch_size': args.batch_size}
+    # wandb.init(entity='wtj', project='Unet_effusion_segmentation')
+    # wandb.config = {'epochs': max_epoch, 'batch_size': args.batch_size}
+    experiment = wandb.init(project='Unet_effusion_segmentation', resume='allow', anonymous='must')
+    experiment.config.update(dict(epochs=max_epoch, batch_size=batch_size, learning_rate=base_lr))
     '''train'''
     print(f'''Starting training:
     Epochs:          {max_epoch}
-    Batch size(labeled, weak_labeled):      {batch_size, batch_size * 2}
+    Batch size(labeled, weak_labeled):      {batch_size, batch_size * 3}
     Learning rate:   {base_lr}
     Training size:   {datasize}
     Checkpoints:     {args.save_path}
@@ -192,11 +194,12 @@ if __name__ == "__main__":
             iter_num = iter_num + 1
 
 
-            wandb.log({
+            experiment.log({
             'supervised_loss': supervised_loss,
             "weak_loss": weak_supervised_loss,
             "consistency_loss": consistency_loss,
             "total_loss": loss.item(),
+            'epoch': epoch_num,
             "step":iter_num
         })
             #评估,每个epoch评估十次
@@ -206,12 +209,17 @@ if __name__ == "__main__":
                     dataloader=val_dataloader,
                     device=device,
                     num_classes=num_classes)
-                wandb.log({
+                experiment.log({
                     "val_dice":val_dice,
-                    "step":iter_num
+                    "step":iter_num,
+                    'images': wandb.Image(labeled_imgs[0].cpu()),
+                    'masks': {
+                        'true': wandb.Image(labeled_masks[0].float().cpu()),
+                        'pred': wandb.Image(outputs_labeled.argmax(dim=1)[0].float().cpu()),
+                    },
+                    'epoch': epoch_num
                 })
-                print("\nepoch_loss : {:.3f}   Validation Dice score: {:.3f}".format(sum(epoch_loss) / len(epoch_loss), val_dice.item()))
-
+                print("epoch_loss : {:.3f}   Validation Dice score: {:.3f}".format(sum(epoch_loss) / len(epoch_loss), val_dice.item()))
 
             ## change lr
             if iter_num % 2500 == 0:
