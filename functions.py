@@ -25,9 +25,9 @@ def create_model(device, num_classes = 4, ema=False):
             param.detach_()
     return model
 
-def save_model(save_path, iter_num, model):
+def save_model(save_path, epoch, model):
     save_mode_path = os.path.join(save_path,
-                                'iter_' + str(iter_num) + '.pth')
+                                'iter_' + str(epoch) + '.pth')
     torch.save(model.state_dict(), save_mode_path)
-    print(f'Checkpoint {iter_num} saved!')
+    print(f'Checkpoint {epoch} saved!')
 

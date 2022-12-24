@@ -2,5 +2,6 @@
 /data
 /checkpoints
 /__pycache__
-
+/visible_val
+/wandb
 *.ipynb
